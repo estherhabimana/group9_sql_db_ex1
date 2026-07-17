@@ -34,7 +34,7 @@ CREATE TABLE Students(
     classroom_id INT,
     enrollment_date DATE,
     FOREIGN KEY (classroom_id) REFERENCES Classroom(classroom_id)
-);\
+);
 
 INSERT INTO Students VALUES
     (1,  'jane',   'jane@example.com',   5, '2026-01-05'),
@@ -133,8 +133,7 @@ CREATE TABLE Student_Activities (
     FOREIGN KEY (student_id)  REFERENCES Students(student_id),
     FOREIGN KEY (activity_id) REFERENCES Extra_Curricular_Activities(activity_id)
 );
-
-INSERT INTO Extra_Curricular_Activities (activity_name, activity_type, schedule_day, location, advisor_id)
+INSERT INTO Extra_Curricular_Activities (activity_name, category, schedule_day, location, faculty_advisor_id)
 VALUES
     ('Chess Club',         'Academic',  'Monday',    'Room 101',    1),
     ('Basketball Team',    'Sport',     'Wednesday', 'Main Gym',    2),
@@ -168,7 +167,7 @@ WHERE activity_name = 'Environmental Club';
 -- Member E: SELECT with WHERE
 SELECT activity_id, activity_name, schedule_day, location
 FROM Extra_Curricular_Activities
-WHERE activity_type = 'Academic';
+WHERE category = 'Academic';
 
 -- ============================================================
 -- GROUP TASKS: Join queries, aggregate query, normalization
