@@ -32,8 +32,9 @@ CREATE TABLE Students(
     name VARCHAR(100),
     email VARCHAR(100),
     classroom_id INT,
-    enrollment_date DATE
-);
+    enrollment_date DATE,
+    FOREIGN KEY (classroom_id) REFERENCES Classroom(classroom_id)
+);\
 
 INSERT INTO Students VALUES
     (1,  'jane',   'jane@example.com',   5, '2026-01-05'),
@@ -108,11 +109,11 @@ WHERE classroom_id IN (2, 3);
 CREATE TABLE Extra_Curricular_Activities (
     activity_id   INT PRIMARY KEY AUTO_INCREMENT,
     activity_name VARCHAR(100) NOT NULL,
-    activity_type VARCHAR(50),
+    category VARCHAR(50),
     schedule_day  VARCHAR(20),
     location      VARCHAR(100),
-    advisor_id    INT,
-    FOREIGN KEY (advisor_id) REFERENCES Faculty(faculty_id)
+    faculty_advisor_id    INT,
+    FOREIGN KEY (faculty_advisor_id) REFERENCES Faculty(faculty_id)
 );
 
 CREATE TABLE Student_Courses (
@@ -153,7 +154,7 @@ INSERT INTO Student_Activities (student_id, activity_id, joined_on) VALUES
     (4,  2, '2026-02-02'),
     (7,  3, '2026-02-03'),
     (13, 4, '2026-02-04'),
-    (1,  5, '2026-02-05');
+    (1,  4, '2026-02-05');
 
 -- Member E: UPDATE
 UPDATE Extra_Curricular_Activities
@@ -168,3 +169,50 @@ WHERE activity_name = 'Environmental Club';
 SELECT activity_id, activity_name, schedule_day, location
 FROM Extra_Curricular_Activities
 WHERE activity_type = 'Academic';
+
+-- ============================================================
+-- GROUP TASKS: Join queries, aggregate query, normalization
+-- ==========================================================
+
+-- Join 1: "Student X is enrolled in Course Y, taught by Faculty Z, in Classroom W."
+SELECT s.name AS student, c.course_name AS course,
+       f.name AS taught_by, cl.room_number AS classroom
+FROM Students s
+JOIN Student_Courses sc ON s.student_id = sc.student_id
+JOIN Courses c ON sc.course_id = c.course_id
+JOIN Faculty f ON c.faculty_id = f.faculty_id
+JOIN Classroom cl ON c.classroom_id = cl.classroom_id;
+
+-- Join 2: "Student X participates in Activity Y, advised by Faculty Z."
+SELECT s.name AS student, a.activity_name AS activity,
+       f.name AS advisor
+FROM Students s
+JOIN Student_Activities sa ON s.student_id = sa.student_id
+JOIN Extra_Curricular_Activities a ON sa.activity_id = a.activity_id
+JOIN Faculty f ON a.faculty_advisor_id = f.faculty_id;
+
+-- Join 3 (our choice): "Course X is taught in Room Y of Building Z."
+SELECT c.course_name AS course, cl.room_number AS room,
+       cl.building AS building
+FROM Courses c
+JOIN Classroom cl ON c.classroom_id = cl.classroom_id;
+
+-- Aggregate: number of students enrolled in each course
+SELECT c.course_name, COUNT(sc.student_id) AS student_count
+FROM Courses c
+JOIN Student_Courses sc ON c.course_id = sc.course_id
+GROUP BY c.course_name;
+
+-- =============================================
+-- NORMALIZATION CHECK (group discussion summary):
+-- Each table stores facts about one entity only, so no data is
+-- duplicated across tables. Many-to-many relationships (students
+-- to courses, students to activities) are handled by the junction
+-- tables Student_Courses and Student_Activities instead of repeating
+-- columns; their composite primary keys (student_id, activity/course_id)
+-- prevent duplicate enrollments. Repeated values like building names
+-- in Classroom or a classroom_id shared by several students are
+-- intentional one-to-many references, not duplication. We verified
+-- every foreign key points to an existing primary key, and fixed one
+-- case where a delete would have orphaned a junction row.
+-- ==========================================================
