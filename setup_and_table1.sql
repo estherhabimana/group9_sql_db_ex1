@@ -4,6 +4,38 @@ CREATE DATABASE school_system
 
 USE school_system;
 
+-- ===== Classroom table (Pogba / Kabi J Paul) =====
+-- Must come before Students: Students.classroom_id references this table
+CREATE TABLE Classroom(
+    classroom_id INT PRIMARY KEY,
+    room_number VARCHAR(10),
+    building VARCHAR(50),
+    capacity INT
+);
+
+
+INSERT INTO Classroom VALUES
+    (2, 'A101', 'Main Block', 40),
+    (3, 'A205', 'Main Block', 35),
+    (5, 'B12', 'Science Wing', 30),
+    (7, 'C03', 'Library', 25),
+    (9, 'B14', 'Science Wing', 50);
+
+
+UPDATE Classroom
+SET capacity = 45
+WHERE classroom_id = 5;
+
+-- delete: room 9 decommissioned 
+DELETE FROM Classroom
+WHERE classroom_id = 9;
+
+-- query: find large classrooms in the Main Block
+SELECT room_number, building, capacity
+FROM Classroom
+WHERE building = 'Main Block' AND capacity >= 35;
+
+
 -- 1 creates student table
 CREATE TABLE Students(  
     student_id INT PRIMARY KEY,
