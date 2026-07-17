@@ -74,10 +74,33 @@ WHERE classroom_id IN(
     HAVING COUNT(student_id) >= 2
 );
 
--- ========================================
+-- ===== Faculty table (Mathiang Mathew) =====
 
-
--- 2 creates table
+CREATE TABLE Faculty(
+    faculty_id INT PRIMARY KEY,
+    name VARCHAR(100),
+    email VARCHAR(100),
+    department VARCHAR(50)
+);
+INSERT INTO Faculty VALUES
+(1, 'Amina Hassan', 'amina@example.com', 'Computer Science'),
+(2, 'John Mwangi', 'mwangi@example.com', 'Mathematics'),
+(3, 'Sarah Uwimana', 'sarah@example.com', 'Entrepreneurship'),
+(4, 'Peter Nkurunziza', 'peter@example.com', 'Global Challenges'),
+(5, 'Grace Kamau', 'grace@example.com', 'Software Engineering'),
+(6, 'David Lomude', 'david@example.com', 'Data Science');
+-- updating and deleting values in the faculty table
+UPDATE Faculty
+SET department = 'Computer Science'
+WHERE faculty_id = 4;
+-- delete: row 6 is a spare, kept clear of any reference from
+-- Courses or Extra_Curricular_Activities
+DELETE FROM Faculty
+WHERE faculty_id = 6;
+-- query: faculty in the Computer Science department
+SELECT faculty_id, name, email, department
+FROM Faculty
+WHERE department = 'Computer Science';
 -- 3 creates table
 -- 4 creates table
 -- 5 creates table
