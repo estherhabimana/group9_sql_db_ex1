@@ -105,3 +105,35 @@ WHERE department = 'Computer Science';
 -- 4 creates table
 -- 5 creates table
 
+-- ========================================
+-- ===== Courses table (Member D) =====
+CREATE TABLE Courses(
+    course_id INT PRIMARY KEY,
+    course_name VARCHAR(100),
+    credits INT,
+    faculty_id INT,
+    classroom_id INT,
+    FOREIGN KEY (faculty_id) REFERENCES Faculty(faculty_id),
+    FOREIGN KEY (classroom_id) REFERENCES Classroom(classroom_id)
+);
+INSERT INTO Courses VALUES
+(101, 'Introduction to Programming', 3, 1, 2),
+(102, 'Calculus I', 4, 2, 3),
+(103, 'Entrepreneurship 101', 3, 3, 7),
+(104, 'Global Challenges Seminar', 2, 4, 5),
+(105, 'Data Structures', 4, 5, 2);
+-- updating a course's credit value
+UPDATE Courses
+SET credits = 3
+WHERE course_id = 104;
+
+-- deleting a course (e.g. cancelled course)
+DELETE FROM Courses
+WHERE course_id = 105;
+-- query: find all courses taught in Main Block classrooms
+SELECT course_id, course_name, faculty_id, classroom_id
+FROM Courses
+WHERE classroom_id IN (2, 3);
+USE school_system;
+SELECT * FROM Courses;
+
