@@ -36,10 +36,40 @@ We needed the last two "connector" tables because one student can take many cour
 - As a group we double-checked that every foreign key actually points to a real row in the other table.
 
 # Normalization (keeping data from repeating)
-We made sure each table only stores information about one thing, so we're not repeating the same data in different places. For example, a student's classroom is stored once in the Students table, not copied into every course. The connector tables handle the many-to-many parts instead of us repeating columns.
+We made sure each table only stores information about one thing, so we're not repeating the same data in different places. For example, a student's classroom is stored once in the Students table, not copied into every course. The connector tables handle the many-to-many parts instead of us repeating columns. 
+Here's the block for point 3 — paste it near the bottom of the README, after the normalization section. Each of us fills in our own slot later.
+
+# Group queries
+Each query below was written by the group together. The explanation under each one is written by the member named, in their own words.
+
+## Join 1 — student, course, teacher, room
+Answers: "Student X is enrolled in Course Y, taught by Faculty Z, in Classroom W."
+
+Explanation (by Esther):
+_Esther: 3–5 sentences — what question does this answer, which tables does it use, and why joined in this order?_
+
+## Join 2 — student, activity, advisor
+Answers: "Student X participates in Activity Y, advised by Faculty Z."
+
+Explanation (by Mathiang):
+_Mathiang: 3–5 sentences — what question does this answer, which tables does it use, and why joined in this order?_
+
+## Join 3 — course, room, building
+Answers: "Course X is taught in Room Y of Building Z."
+
+Explanation (by Benigne):
+_Benigne: 3–5 sentences — what question does this answer, and why only two tables are needed (no connector table)?_
+
+## Aggregate — students per course
+Answers: "How many students are enrolled in each course?"
+
+Explanation (by Elnathan):
+_Elnathan: 3–5 sentences — what does it count, what does GROUP BY do, and why does the join leave out courses with no students?_
+
+( each person pulls, replaces their own italic line with their real paragraph, commits, and pushes, one at a time, in order: Esther → Mathiang → Benigne → Elnathan.)
 
 # What's in the SQL file
-The file `school_system.sql` has, in this order:
+The file `alu_db.sql` has, in this order:
 1. The command to create the database
 2. All 5 CREATE TABLE statements, in the order they need to be built
 3. Sample data (INSERT statements) for every table
